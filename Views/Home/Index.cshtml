@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script src="~/js/index.js" asp-append-version="true"></script>
+<div class="container h-100">
+
+        <h2>Video Translation</h2>
+    <div class="row">
+        <div class="col-8 card border rounded p-4 text-center">
+            <input type="hidden" id="uploadedfile"/>
+            
+
+            <!-- Card Header -->
+            <div class="card-header text-center bg-white border-0">
+                <!-- Drag & Drop area -->
+                <div id="dropZone" class="border border-primary rounded p-3 mb-3" style="min-height: 120px;">
+                    <div class="mb-2">
+                        @* <i class="bi bi-cloud-upload fs-3 text-primary"></i> <!-- smaller icon --> *@
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <p class="fw-bold mb-1 small">Click here to upload video</p>
+                    <p class="text-muted small mb-2">File type: mp4</p>
+                    <label for="FileUpload_FormFile" class="text-primary small" style="cursor: pointer;">
+                        Browse Local Files
+                    </label>
+                    <input id="FileUpload_FormFile" type="file" accept=".mov,.mp4,.webm" style="display:none;" />
+                    <div class="mt-1">
+                        <strong id="lblFileName" class="text-truncate d-block small" style="max-width:300px; margin:auto;"></strong>
+                    </div>
+                </div>
+
+                <!-- Or use URL -->
+                <p class="fw-bold small">Or Paste Link of url</p>
+                <div class="mb-3">
+                    <input type="url" class="form-control form-control-sm" id="videoUrl" name="videoUrl"
+                           placeholder="Paste your video's URL here">
+                </div>
+
+                <!-- Upload button -->
+                <div>
+                    <button id="btnUpload" class="btn btn-success btn-sm" type="button">Upload</button>
+                </div>
+            </div>
+
+
+
+
+            <div id="upprogress" class="card-header p-1"></div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Source & Target Language side by side -->
+                <div class="d-flex justify-content-between mt-3 gap-3">
+                    <div class="input-group mb-3">
+                        <label for="transLang" class="btn btn-primary">Source Language</label>
+                        <select id="transLang" class="form-control form-control-sm fixed-dropdown">
+                            <option value="Auto">Detect</option>
+                            <option value="English">English</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Gujarati">Gujarati</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Malayalam">Malayalam</option>
+                            <option value="Marathi">Marathi</option>
+                            <option value="Oriya">Oriya</option>
+                            <option value="Punjabi">Punjabi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Urdu">Urdu</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                        </select>
+                    </div>    
+                    <!-- Target Language -->
+                    <div class="input-group mb-3">
+                        <label for="targetLanguage" class="btn btn-primary">Target Language</label>
+                        <select class="form-select form-select-sm fixed-dropdown" id="targetLanguage" name="targetLanguage">
+                            <option value="">Select language</option>
+                            
+                            <option value="English">English</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Gujarati">Gujarati</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Malayalam">Malayalam</option>
+                            <option value="Marathi">Marathi</option>
+                            <option value="Oriya">Oriya</option>
+                            <option value="Punjabi">Punjabi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Urdu">Urdu</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="French">French</option>
+                            <option value="German">German</option>
+                        </select>
+                    </div>
+                   
+                    <div class="input-group mb-3">
+                        <label for="targetLanguage" class="btn btn-primary">Voices</label>
+                        <select class="form-select form-select-sm fixed-dropdown" id="ddlVoics" name="ddlVoics">
+                            
+                        </select>
+                    </div>
+                </div>
+               
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary btn-sm p-2 m-1" id="btnsubmit" onclick="TranslateVidio()">
+                            <span class="btn-text">Translate & Play</span>
+                            <span class="spinner-border spinner-border-sm loader" role="status" aria-hidden="true" style="display:none;"></span>
+                        </button>
+                  
+                    
+                        
+                            <button type="button" class="btn btn-primary dropdown-toggle p-2 m-1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Download
+                            </button>
+                            <div class="dropdown-menu p-3" style="min-width: 220px;">
+                                <form id="downloadForm" method="post" action="/api/download/multiple">
+                                    <div class="mb-2">
+                                        <label><input type="checkbox" name="translated_video" value="translated_video.mp4" /> Translated Video</label><br />
+                                        <label><input type="checkbox" name="translated_audio" value="translated_audio.mp3" /> Translated Audio</label><br />
+                                        <label><input type="checkbox" name="source_transcript" value="transcript.vtt" /> Source Transcript (VTT)</label><br />
+                                        <label><input type="checkbox" name="language_transcript" value="transcript.vtt" /> Language Transcript (VTT)</label><br />
+                                        
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm w-100">Download Selected</button>
+                                </form>
+                            </div>
+
+                       
+                        <button class="btn btn-primary btn-sm p-2 m-1">
+                            <a href='https://cceditor.moxveda.com' class="text-white text-decoration-none"target="_blank">Edit Content</a>
+                        </button>
+
+                        <button type="button" class="btn btn-primary btn-sm p-2 m-1" id="btnregenerate" onclick="RegenerateVideo()">  
+                            <span class="btn-text2">Regenerate</span>
+                            <span id="loader2"class="spinner-border spinner-border-sm loader" role="status" aria-hidden="true" style="display:none;"></span>
+                        </button>
+                   
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Right side Preview -->
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <strong>Source Video</strong>
+                </div>
+                <div class="card-body">
+                    <div id="videoContainer" >
+                        <video id="myVideo" controls height="200" width="360">
+                            <source src="" type="video/mp4">
+                            <track label="English" kind="metadata" srclang="en_us" src="/Upload/English Sample.VTT" default />
+                        </video>
+                    </div>
+                </div>
+                <div class="card-header bg-white">
+                    <strong>Target Video</strong>
+                </div>
+                <div class="card-body">
+                    <video id="translatedVideoPlayer" controls height="200" width="360">
+                        <source id="translatedVideoSource" src="" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
