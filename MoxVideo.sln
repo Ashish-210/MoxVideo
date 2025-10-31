@@ -5,8 +5,6 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoxVideo", "MoxVideo.csproj", "{37919B93-56D7-40FC-9016-9E112E6B8877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioProcessor", "..\AudioProcessor\AudioProcessor.csproj", "{DB700E78-8395-4428-9A19-D6A3251C25A5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
