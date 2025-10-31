@@ -8,7 +8,7 @@
         <h2>Video Translation</h2>
     <div class="row">
         <div class="col-8 card border rounded p-4 text-center">
-            <input type="hidden" id="uploadedfile"/>
+            <input type="hidden" id="uploadedfile" />
             
 
             <!-- Card Header -->
@@ -131,12 +131,15 @@
 
                        
                         <button class="btn btn-primary btn-sm p-2 m-1">
-                            <a href='https://cceditor.moxveda.com' class="text-white text-decoration-none"target="_blank">Edit Content</a>
+                        <a href='https://cceditor.moxveda.com' class="text-white text-decoration-none" target="_blank">Edit Content</a>
                         </button>
 
                         <button type="button" class="btn btn-primary btn-sm p-2 m-1" id="btnregenerate" onclick="RegenerateVideo()">  
                             <span class="btn-text2">Regenerate</span>
-                            <span id="loader2"class="spinner-border spinner-border-sm loader" role="status" aria-hidden="true" style="display:none;"></span>
+                        <span id="loader2" class="spinner-border spinner-border-sm loader" role="status" aria-hidden="true" style="display:none;"></span>
+                    </button>
+                    <button class="btn btn-primary btn-sm p-2 m-1">
+                        <a href='/Home/UploadInfo' class="text-white text-decoration-none" target="_blank">Files</a>
                         </button>
                    
                 </div>
@@ -151,7 +154,7 @@
                     <strong>Source Video</strong>
                 </div>
                 <div class="card-body">
-                    <div id="videoContainer" >
+                    <div id="videoContainer">
                         <video id="myVideo" controls height="200" width="360">
                             <source src="" type="video/mp4">
                             <track label="English" kind="metadata" srclang="en_us" src="/Upload/English Sample.VTT" default />
